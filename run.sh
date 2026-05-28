@@ -17,10 +17,11 @@ fi
 echo "[2/3] Installing dependencies..."
 venv/bin/pip install -q -r backend/requirements.txt
 
-echo "[3/3] Starting server..."
+PORT="${PORT:-8000}"
+echo "[3/3] Starting server on port $PORT..."
 echo ""
-echo "  Open:  http://localhost:8000"
+echo "  Open:  http://localhost:$PORT"
 echo "  Stop:  Ctrl+C"
 echo ""
 
-venv/bin/uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
+venv/bin/uvicorn backend.main:app --host 0.0.0.0 --port "$PORT" --reload

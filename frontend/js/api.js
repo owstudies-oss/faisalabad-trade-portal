@@ -1,10 +1,5 @@
-let API_BASE = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
-  ? window.location.origin
-  : window.location.origin;
-
-if (API_BASE === window.location.origin && !API_BASE.includes('8000')) {
-  API_BASE = `${window.location.protocol}//${window.location.hostname}:8000`;
-}
+// API calls go to the same origin (backend serves both frontend & API)
+const API_BASE = window.location.origin;
 
 const api = {
   getToken: () => localStorage.getItem('ftp_token'),
