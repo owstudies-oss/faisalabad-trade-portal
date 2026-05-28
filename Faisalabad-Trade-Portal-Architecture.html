@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faisalabad Trade Portal — Architecture Diagram</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'JetBrains Mono', monospace; background: #020617; min-height: 100vh; padding: 2rem; color: white; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 2rem; }
+    .header-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem; }
+    .pulse-dot { width: 12px; height: 12px; background: #22d3ee; border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+    h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.025em; }
+    .subtitle { color: #94a3b8; font-size: 0.875rem; margin-left: 1.75rem; }
+    .diagram-container { background: rgba(15, 23, 42, 0.5); border-radius: 1rem; border: 1px solid #1e293b; padding: 1.5rem; overflow-x: auto; }
+    svg { width: 100%; min-width: 1000px; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; margin-top: 2rem; }
+    .card { background: rgba(15, 23, 42, 0.5); border-radius: 0.75rem; border: 1px solid #1e293b; padding: 1.25rem; }
+    .card-header { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; }
+    .card-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .card-dot.cyan { background: #22d3ee; }
+    .card-dot.emerald { background: #34d399; }
+    .card-dot.violet { background: #a78bfa; }
+    .card-dot.amber { background: #fbbf24; }
+    .card-dot.rose { background: #fb7185; }
+    .card-dot.orange { background: #fb923c; }
+    .card h3 { font-size: 0.875rem; font-weight: 600; }
+    .card ul { list-style: none; color: #94a3b8; font-size: 0.75rem; }
+    .card li { margin-bottom: 0.375rem; }
+    .footer { text-align: center; margin-top: 1.5rem; color: #475569; font-size: 0.75rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-row">
+        <div class="pulse-dot"></div>
+        <h1>Faisalabad Trade Portal — System Architecture</h1>
+      </div>
+      <p class="subtitle">Export, Manufacturing &amp; Factory Community Platform | Faisalabad, Pakistan</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1100 820">
+        <defs>
+          <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b" />
+          </marker>
+          <marker id="arrowhead-cyan" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#22d3ee" />
+          </marker>
+          <marker id="arrowhead-rose" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#fb7185" />
+          </marker>
+          <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#1e293b" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+
+        <rect width="100%" height="100%" fill="url(#grid)" />
+
+        <!-- ===== EXTERNAL ===== -->
+        <!-- Users -->
+        <rect x="40" y="60" width="130" height="80" rx="6" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="105" y="86" fill="white" font-size="12" font-weight="600" text-anchor="middle">Users</text>
+        <text x="105" y="104" fill="#94a3b8" font-size="9" text-anchor="middle">Exporters</text>
+        <text x="105" y="118" fill="#94a3b8" font-size="9" text-anchor="middle">Manufacturers</text>
+        <text x="105" y="132" fill="#94a3b8" font-size="9" text-anchor="middle">Factory Owners</text>
+
+        <!-- Government Data Sources -->
+        <rect x="40" y="190" width="130" height="100" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="105" y="212" fill="white" font-size="11" font-weight="600" text-anchor="middle">Govt Data</text>
+        <text x="105" y="230" fill="#94a3b8" font-size="8" text-anchor="middle">• FBR Tax Data</text>
+        <text x="105" y="244" fill="#94a3b8" font-size="8" text-anchor="middle">• Pakistan Customs</text>
+        <text x="105" y="258" fill="#94a3b8" font-size="8" text-anchor="middle">• TDAP Exports</text>
+        <text x="105" y="272" fill="#94a3b8" font-size="8" text-anchor="middle">• SMEDA / PBS</text>
+
+        <!-- Payment Gateways -->
+        <rect x="40" y="340" width="130" height="80" rx="6" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="105" y="364" fill="white" font-size="11" font-weight="600" text-anchor="middle">Payments</text>
+        <text x="105" y="382" fill="#94a3b8" font-size="8" text-anchor="middle">• JazzCash</text>
+        <text x="105" y="396" fill="#94a3b8" font-size="8" text-anchor="middle">• Easypaisa</text>
+        <text x="105" y="410" fill="#94a3b8" font-size="8" text-anchor="middle">• Bank Transfer</text>
+
+        <!-- ===== CLOUD BOUNDARY ===== -->
+        <rect x="200" y="30" width="880" height="770" rx="12" fill="rgba(251, 191, 36, 0.04)" stroke="#fbbf24" stroke-width="1" stroke-dasharray="8,4"/>
+        <text x="212" y="50" fill="#fbbf24" font-size="10" font-weight="600">Cloud Infrastructure</text>
+
+        <!-- ===== CDN / WAF ===== -->
+        <rect x="230" y="70" width="140" height="60" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="300" y="94" fill="white" font-size="12" font-weight="600" text-anchor="middle">CDN + WAF</text>
+        <text x="300" y="112" fill="#94a3b8" font-size="9" text-anchor="middle">Cloudflare / AWS CF</text>
+
+        <!-- ===== LOAD BALANCER ===== -->
+        <rect x="230" y="170" width="140" height="60" rx="6" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1.5"/>
+        <text x="300" y="194" fill="white" font-size="12" font-weight="600" text-anchor="middle">Load Balancer</text>
+        <text x="300" y="212" fill="#94a3b8" font-size="9" text-anchor="middle">HTTPS :443</text>
+
+        <!-- ===== FRONTEND TIER ===== -->
+        <rect x="230" y="280" width="260" height="150" rx="8" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="360" y="302" fill="white" font-size="12" font-weight="600" text-anchor="middle">Frontend (React + Next.js)</text>
+        <text x="310" y="322" fill="#22d3ee" font-size="9">Public Section:</text>
+        <text x="310" y="338" fill="#94a3b8" font-size="9">  • General Dashboard</text>
+        <text x="310" y="352" fill="#94a3b8" font-size="9">  • Tax / Customs / Export Data</text>
+        <text x="310" y="366" fill="#94a3b8" font-size="9">  • Regulatory Updates</text>
+        <text x="310" y="386" fill="#22d3ee" font-size="9">Private Section (Authenticated):</text>
+        <text x="310" y="402" fill="#94a3b8" font-size="9">  • Personalized Dashboard</text>
+        <text x="310" y="416" fill="#94a3b8" font-size="9">  • Package Selection | Payments</text>
+
+        <!-- ===== SECURITY GROUP: APP ===== -->
+        <rect x="530" y="260" width="240" height="180" rx="8" fill="transparent" stroke="#fb7185" stroke-width="1" stroke-dasharray="4,4"/>
+        <text x="538" y="278" fill="#fb7185" font-size="8">Security Zone: Application</text>
+
+        <!-- ===== AUTH SERVICE ===== -->
+        <rect x="545" y="290" width="210" height="60" rx="6" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1.5"/>
+        <text x="650" y="312" fill="white" font-size="12" font-weight="600" text-anchor="middle">Auth Service</text>
+        <text x="650" y="330" fill="#94a3b8" font-size="9" text-anchor="middle">OAuth 2.0 | JWT | 2FA | RBAC</text>
+
+        <!-- ===== API GATEWAY ===== -->
+        <rect x="545" y="370" width="210" height="60" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="650" y="392" fill="white" font-size="12" font-weight="600" text-anchor="middle">API Gateway</text>
+        <text x="650" y="410" fill="#94a3b8" font-size="9" text-anchor="middle">Rate Limit | Validation | Audit</text>
+
+        <!-- ===== BACKEND MICROSERVICES ===== -->
+        <rect x="530" y="480" width="520" height="200" rx="10" fill="rgba(6, 78, 59, 0.35)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="790" y="500" fill="white" font-size="12" font-weight="600" text-anchor="middle">Backend Microservices (Node.js / Python)</text>
+
+        <!-- Service 1 -->
+        <rect x="545" y="510" width="150" height="65" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="620" y="532" fill="white" font-size="10" font-weight="600" text-anchor="middle">User Service</text>
+        <text x="620" y="548" fill="#94a3b8" font-size="8" text-anchor="middle">Profiles | Roles</text>
+        <text x="620" y="562" fill="#94a3b8" font-size="8" text-anchor="middle">Preferences</text>
+
+        <!-- Service 2 -->
+        <rect x="715" y="510" width="150" height="65" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="790" y="532" fill="white" font-size="10" font-weight="600" text-anchor="middle">Data Aggregator</text>
+        <text x="790" y="548" fill="#94a3b8" font-size="8" text-anchor="middle">Govt APIs | Scrapers</text>
+        <text x="790" y="562" fill="#94a3b8" font-size="8" text-anchor="middle">ETL Pipeline</text>
+
+        <!-- Service 3 -->
+        <rect x="885" y="510" width="150" height="65" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="960" y="532" fill="white" font-size="10" font-weight="600" text-anchor="middle">Billing Service</text>
+        <text x="960" y="548" fill="#94a3b8" font-size="8" text-anchor="middle">Subscriptions</text>
+        <text x="960" y="562" fill="#94a3b8" font-size="8" text-anchor="middle">Invoicing | Payments</text>
+
+        <!-- Service 4 -->
+        <rect x="545" y="595" width="150" height="65" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="620" y="617" fill="white" font-size="10" font-weight="600" text-anchor="middle">Package Engine</text>
+        <text x="620" y="633" fill="#94a3b8" font-size="8" text-anchor="middle">Service Catalog</text>
+        <text x="620" y="647" fill="#94a3b8" font-size="8" text-anchor="middle">Pricing Logic</text>
+
+        <!-- Service 5 -->
+        <rect x="715" y="595" width="150" height="65" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="790" y="617" fill="white" font-size="10" font-weight="600" text-anchor="middle">Notification Svc</text>
+        <text x="790" y="633" fill="#94a3b8" font-size="8" text-anchor="middle">Email | SMS | Push</text>
+        <text x="790" y="647" fill="#94a3b8" font-size="8" text-anchor="middle">Alerts</text>
+
+        <!-- Service 6 -->
+        <rect x="885" y="595" width="150" height="65" rx="6" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1.5"/>
+        <text x="960" y="617" fill="white" font-size="10" font-weight="600" text-anchor="middle">Report Engine</text>
+        <text x="960" y="633" fill="#94a3b8" font-size="8" text-anchor="middle">PDF | Excel | CSV</text>
+        <text x="960" y="647" fill="#94a3b8" font-size="8" text-anchor="middle">Analytics</text>
+
+        <!-- ===== DATABASE TIER ===== -->
+        <rect x="230" y="720" width="820" height="60" rx="8" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="310" y="746" fill="white" font-size="12" font-weight="600">Database Tier</text>
+        <text x="460" y="746" fill="#94a3b8" font-size="9">PostgreSQL (Primary)</text>
+        <text x="610" y="746" fill="#94a3b8" font-size="9">Redis (Cache)</text>
+        <text x="730" y="746" fill="#94a3b8" font-size="9">Elasticsearch (Search)</text>
+        <text x="880" y="746" fill="#94a3b8" font-size="9">S3 (Documents)</text>
+
+        <!-- ===== ARROWS ===== -->
+        <!-- Users → CDN -->
+        <line x1="170" y1="100" x2="228" y2="100" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+        <text x="199" y="94" fill="#94a3b8" font-size="9" text-anchor="middle">HTTPS</text>
+
+        <!-- CDN → LB -->
+        <line x1="300" y1="130" x2="300" y2="168" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- LB → Frontend -->
+        <line x1="300" y1="230" x2="300" y2="278" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowhead-cyan)"/>
+
+        <!-- Frontend → Auth (dashed - auth flow) -->
+        <path d="M 490 310 L 530 310 Q 540 310 540 320 L 543 320" fill="none" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrowhead-rose)"/>
+        <text x="510" y="306" fill="#fb7185" font-size="8" text-anchor="middle">Auth</text>
+
+        <!-- Frontend → API Gateway -->
+        <path d="M 490 370 L 525 370 Q 540 370 540 380 L 543 390" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- API Gateway → Microservices -->
+        <line x1="650" y1="430" x2="650" y2="478" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- Microservices → DB -->
+        <line x1="650" y1="680" x2="650" y2="718" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+
+        <!-- Govt Data → Data Aggregator (dashed) -->
+        <path d="M 170 240 L 200 240 Q 220 240 230 250 L 230 545 Q 230 560 240 560 L 713 560" fill="none" stroke="#fb7185" stroke-width="1.5" stroke-dasharray="5,5" marker-end="url(#arrowhead-rose)"/>
+        <text x="240" y="260" fill="#fb7185" font-size="8">APIs / Scrape</text>
+
+        <!-- Payments → Billing -->
+        <path d="M 170 380 L 200 380 Q 220 380 230 390 L 230 555 Q 230 560 240 560 L 883 560" fill="none" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+        <text x="240" y="400" fill="#fb923c" font-size="8">Webhooks</text>
+
+        <!-- ===== LEGEND ===== -->
+        <text x="850" y="68" fill="white" font-size="10" font-weight="600">Legend</text>
+        <rect x="850" y="78" width="16" height="10" rx="2" fill="rgba(8, 51, 68, 0.4)" stroke="#22d3ee" stroke-width="1"/>
+        <text x="872" y="86" fill="#94a3b8" font-size="8">Frontend</text>
+        <rect x="850" y="94" width="16" height="10" rx="2" fill="rgba(6, 78, 59, 0.4)" stroke="#34d399" stroke-width="1"/>
+        <text x="872" y="102" fill="#94a3b8" font-size="8">Backend</text>
+        <rect x="850" y="110" width="16" height="10" rx="2" fill="rgba(120, 53, 15, 0.3)" stroke="#fbbf24" stroke-width="1"/>
+        <text x="872" y="118" fill="#94a3b8" font-size="8">Cloud / Infra</text>
+        <rect x="850" y="126" width="16" height="10" rx="2" fill="rgba(76, 29, 149, 0.4)" stroke="#a78bfa" stroke-width="1"/>
+        <text x="872" y="134" fill="#94a3b8" font-size="8">Database</text>
+        <rect x="850" y="142" width="16" height="10" rx="2" fill="rgba(136, 19, 55, 0.4)" stroke="#fb7185" stroke-width="1"/>
+        <text x="872" y="150" fill="#94a3b8" font-size="8">Security</text>
+        <rect x="850" y="158" width="16" height="10" rx="2" fill="rgba(251, 146, 60, 0.3)" stroke="#fb923c" stroke-width="1"/>
+        <text x="872" y="166" fill="#94a3b8" font-size="8">Payments</text>
+        <rect x="850" y="174" width="16" height="10" rx="2" fill="rgba(30, 41, 59, 0.5)" stroke="#94a3b8" stroke-width="1"/>
+        <text x="872" y="182" fill="#94a3b8" font-size="8">External</text>
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot cyan"></div>
+          <h3>User Experience Layers</h3>
+        </div>
+        <ul>
+          <li>• Public Dashboard — aggregated govt data visible to all visitors</li>
+          <li>• Secure Login — 2FA, OAuth 2.0, JWT session management</li>
+          <li>• Personalized Dashboard — tailored KPIs, saved searches, alerts</li>
+          <li>• Package Selection — modular services with individual pricing</li>
+          <li>• Payment &amp; Invoicing — JazzCash, Easypaisa, bank transfer</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot rose"></div>
+          <h3>Security &amp; Compliance</h3>
+        </div>
+        <ul>
+          <li>• Role-Based Access Control (RBAC) — Exporter / Manufacturer / Admin</li>
+          <li>• Data encryption at rest &amp; in transit (TLS 1.3)</li>
+          <li>• PSD2-compliant payment integration via JazzCash/Easypaisa</li>
+          <li>• Full audit trail on all data access</li>
+          <li>• Session timeout, device tracking, login alerts</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-dot amber"></div>
+          <h3>Monetization Model</h3>
+        </div>
+        <ul>
+          <li>• Free Tier — basic public dashboard + limited data views</li>
+          <li>• Starter Package (PKR 999/mo) — personalized dashboard + customs data</li>
+          <li>• Business Package (PKR 2,999/mo) — full export analytics + reports</li>
+          <li>• Enterprise Package (PKR 9,999/mo) — API access + dedicated support</li>
+          <li>• Add-ons: SMS alerts, PDF reports, competitor tracking</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer">
+      Faisalabad Trade Portal • Architecture v1.0 • Designed for Export &amp; Manufacturing Community
+    </p>
+  </div>
+</body>
+</html>
