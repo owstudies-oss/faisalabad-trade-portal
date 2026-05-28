@@ -1,0 +1,4 @@
+venv/
+faisalabad_portal.db
+__pycache__/
+*.pyc

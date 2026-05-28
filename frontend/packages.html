@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Packages — Faisalabad Trade Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="public-dashboard.html" class="navbar-brand">⚙️ FTP</a>
+  <div class="navbar-nav">
+    <a href="public-dashboard.html">Dashboard</a>
+    <a href="packages.html" class="active">Packages</a>
+    <a href="login.html" id="navLogin">Login</a>
+    <a href="register.html" id="navRegister">Register</a>
+    <a href="dashboard.html" id="navDashboard" style="display:none">My Dashboard</a>
+  </div>
+  <div class="navbar-end" id="navUser">
+    <a href="login.html" class="btn btn-outline btn-sm" id="navLoginBtn">Sign In</a>
+    <a href="register.html" class="btn btn-primary btn-sm" id="navRegisterBtn">Get Started</a>
+    <span id="navGreeting" style="display:none;color:var(--green-100);font-size:14px"></span>
+    <button class="btn btn-ghost btn-sm" id="navLogoutBtn" style="display:none;color:var(--green-100)" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="text-center mb-24">
+      <h1 style="font-size:32px;font-weight:800;color:var(--green-800)">Packages & Pricing</h1>
+      <p style="color:var(--slate-400)">Choose the plan that fits your business. Upgrade anytime.</p>
+    </div>
+
+    <div id="errorMsg" class="alert alert-error" style="display:none"></div>
+    <div id="successMsg" class="alert alert-success" style="display:none"></div>
+
+    <div class="grid-4" id="packagesGrid"></div>
+
+    <div class="text-center mt-24 mb-24">
+      <h2 style="font-size:24px;font-weight:700;color:var(--green-700)">Add-On Services</h2>
+      <p style="color:var(--slate-400)">Enhance your plan with extra features</p>
+    </div>
+    <div class="grid-3" id="addonsGrid"></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><strong>Faisalabad Trade Portal</strong> — فیصل آباد ٹریڈ پورٹل</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+// Auth check for navbar
+const token = api.getToken();
+if (token) {
+  document.getElementById('navLogin').style.display = 'none';
+  document.getElementById('navRegister').style.display = 'none';
+  document.getElementById('navDashboard').style.display = 'inline';
+  document.getElementById('navLoginBtn').style.display = 'none';
+  document.getElementById('navRegisterBtn').style.display = 'none';
+  const user = api.getUser();
+  if (user) document.getElementById('navGreeting').style.display = 'inline';
+  document.getElementById('navGreeting').textContent = user ? `👋 ${user.company_name}` : '';
+  document.getElementById('navLogoutBtn').style.display = 'inline';
+}
+
+async function loadPackages() {
+  try {
+    const pkgs = await api.getPackages();
+    const mainGrid = document.getElementById('packagesGrid');
+    const addonGrid = document.getElementById('addonsGrid');
+
+    mainGrid.innerHTML = pkgs.filter(p => !p.is_addon).map(p => `
+      <div class="package-card ${p.is_popular ? 'popular' : ''}">
+        ${p.is_popular ? '<div class="popular-badge">Most Popular</div>' : ''}
+        <h3>${p.name}</h3>
+        <div class="price">${p.price_pkr === 0 ? 'Free' : `PKR ${p.price_pkr.toLocaleString()}`}<span>${p.price_pkr > 0 ? '/mo' : ''}</span></div>
+        <p style="color:var(--slate-500);font-size:14px">${p.description}</p>
+        <ul>${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
+        <button class="btn btn-primary btn-block" onclick="subscribe('${p.slug}', ${p.price_pkr})">
+          ${p.price_pkr === 0 ? 'Get Started Free' : 'Subscribe Now'}
+        </button>
+      </div>
+    `).join('');
+
+    addonGrid.innerHTML = pkgs.filter(p => p.is_addon).map(p => `
+      <div class="package-card addon">
+        <h3>➕ ${p.name}</h3>
+        <div class="price">PKR ${p.price_pkr.toLocaleString()}<span>/mo</span></div>
+        <p style="color:var(--slate-500);font-size:14px">${p.description}</p>
+        <ul>${p.features.map(f => `<li>${f}</li>`).join('')}</ul>
+        <button class="btn btn-primary btn-block" onclick="subscribe('${p.slug}', ${p.price_pkr})">
+          Add Now — PKR ${p.price_pkr.toLocaleString()}
+        </button>
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('errorMsg').textContent = 'Failed to load packages. Is the backend running?';
+    document.getElementById('errorMsg').style.display = 'block';
+  }
+}
+
+async function subscribe(slug, price) {
+  const token = api.getToken();
+  if (!token) {
+    window.location.href = `login.html?redirect=packages&pkg=${slug}`;
+    return;
+  }
+  if (price > 0) {
+    window.location.href = `payment.html?package=${slug}`;
+  } else {
+    try {
+      const res = await api.subscribe({ package_slug: slug, method: 'free' });
+      const msg = document.getElementById('successMsg');
+      msg.textContent = res.message;
+      msg.style.display = 'block';
+      document.getElementById('errorMsg').style.display = 'none';
+      setTimeout(() => window.location.href = 'dashboard.html', 1500);
+    } catch (e) {
+      document.getElementById('errorMsg').textContent = e.message;
+      document.getElementById('errorMsg').style.display = 'block';
+    }
+  }
+}
+
+loadPackages();
+</script>
+</body>
+</html>

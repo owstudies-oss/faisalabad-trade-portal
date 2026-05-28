@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard — Faisalabad Trade Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="public-dashboard.html" class="navbar-brand">⚙️ FTP</a>
+  <div class="navbar-nav">
+    <a href="public-dashboard.html">Dashboard</a>
+    <a href="packages.html">Packages</a>
+    <a href="dashboard.html" class="active">My Dashboard</a>
+  </div>
+  <div class="navbar-end">
+    <span id="navGreeting" style="color:var(--green-100);font-size:14px"></span>
+    <button class="btn btn-ghost btn-sm" style="color:var(--green-100)" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<section class="section">
+  <div class="container">
+    <div class="flex justify-between items-center flex-wrap mb-24">
+      <div>
+        <h1 style="font-size:28px;font-weight:800;color:var(--green-800)" id="companyName">My Dashboard</h1>
+        <p style="color:var(--slate-400)" id="userInfo"></p>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a href="packages.html" class="btn btn-primary">Upgrade Package</a>
+        <a href="public-dashboard.html" class="btn btn-ghost">Public View</a>
+      </div>
+    </div>
+
+    <div id="errorMsg" class="alert alert-error" style="display:none"></div>
+
+    <!-- KPI Cards -->
+    <div class="grid-4" id="kpiGrid">
+      <div class="spinner" id="kpiLoading"></div>
+    </div>
+
+    <!-- Active Subscriptions -->
+    <div class="card mt-24">
+      <div class="card-header">📦 Active Subscriptions</div>
+      <div id="subsContainer"><p style="color:var(--slate-400)">No active subscriptions yet.</p></div>
+    </div>
+
+    <!-- Recent Payments -->
+    <div class="card mt-16">
+      <div class="card-header">💳 Recent Payments</div>
+      <div class="table-wrap">
+        <table id="paymentsTable">
+          <thead><tr><th>Amount</th><th>Method</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card mt-16">
+      <div class="card-header">📋 Recent Activity</div>
+      <div id="activityContainer"><p style="color:var(--slate-400)">No activity yet.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><strong>Faisalabad Trade Portal</strong> — فیصل آباد ٹریڈ پورٹل</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+async function loadDashboard() {
+  // Check auth
+  if (!api.getToken()) {
+    window.location.href = 'login.html?redirect=dashboard';
+    return;
+  }
+
+  const user = api.getUser();
+  if (user) {
+    document.getElementById('companyName').textContent = `👋 ${user.company_name}`;
+    document.getElementById('userInfo').textContent = `${user.contact_person} · ${user.email} · ${user.city}`;
+    document.getElementById('navGreeting').textContent = `👋 ${user.company_name}`;
+  }
+
+  try {
+    const data = await api.getUserDashboard();
+    document.getElementById('kpiGrid').innerHTML = `
+      <div class="kpi-card"><div class="kpi-value">PKR ${data.kpis.monthly_exports_pkr.toLocaleString()}</div><div class="kpi-label">Monthly Exports</div></div>
+      <div class="kpi-card"><div class="kpi-value">${data.kpis.active_shipments}</div><div class="kpi-label">Active Shipments</div></div>
+      <div class="kpi-card"><div class="kpi-value">${data.kpis.active_packages}</div><div class="kpi-label">Active Packages</div></div>
+      <div class="kpi-card"><div class="kpi-value">PKR ${data.kpis.total_payments.toLocaleString()}</div><div class="kpi-label">Total Spent</div></div>
+    `;
+
+    // Subscriptions
+    const subsDiv = document.getElementById('subsContainer');
+    if (data.subscriptions.length > 0) {
+      subsDiv.innerHTML = data.subscriptions.map(s => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--slate-200);border-radius:10px;margin-bottom:8px">
+          <div><strong>${s.package_name}</strong> — <span class="badge badge-success">${s.status}</span></div>
+          <div><span style="font-weight:700">PKR ${s.price_pkr.toLocaleString()}</span><span style="color:var(--slate-400);font-size:13px;margin-left:8px">/mo</span></div>
+        </div>
+      `).join('');
+    }
+
+    // Payments
+    const payTbody = document.querySelector('#paymentsTable tbody');
+    if (data.recent_payments.length > 0) {
+      payTbody.innerHTML = data.recent_payments.map(p => `
+        <tr>
+          <td><strong>PKR ${p.amount_pkr.toLocaleString()}</strong></td>
+          <td><span class="badge badge-info">${p.method}</span></td>
+          <td><span class="badge badge-success">${p.status}</span></td>
+          <td>${p.date ? new Date(p.date).toLocaleDateString() : '—'}</td>
+        </tr>
+      `).join('');
+    } else {
+      payTbody.innerHTML = '<tr><td colspan="4" style="color:var(--slate-400);text-align:center">No payments yet</td></tr>';
+    }
+
+    // Activities
+    const actDiv = document.getElementById('activityContainer');
+    if (data.recent_activities.length > 0) {
+      actDiv.innerHTML = data.recent_activities.map(a => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--slate-100)">
+          <div><span style="font-weight:500">${a.details || a.action}</span></div>
+          <div style="color:var(--slate-400);font-size:13px">${a.date ? new Date(a.date).toLocaleString() : ''}</div>
+        </div>
+      `).join('');
+    }
+  } catch (e) {
+    if (e.message.includes('401') || e.message.includes('Not authenticated')) {
+      api.clearToken();
+      api.clearUser();
+      window.location.href = 'login.html?redirect=dashboard';
+      return;
+    }
+    document.getElementById('errorMsg').textContent = 'Failed to load dashboard: ' + e.message;
+    document.getElementById('errorMsg').style.display = 'block';
+  }
+}
+
+loadDashboard();
+</script>
+</body>
+</html>

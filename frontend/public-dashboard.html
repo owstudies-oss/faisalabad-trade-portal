@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Faisalabad Trade Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+  <a href="public-dashboard.html" class="navbar-brand">⚙️ FTP</a>
+  <div class="navbar-nav">
+    <a href="public-dashboard.html" class="active">Dashboard</a>
+    <a href="packages.html">Packages</a>
+    <a href="login.html" id="navLogin">Login</a>
+    <a href="register.html" id="navRegister">Register</a>
+    <a href="dashboard.html" id="navDashboard" style="display:none">My Dashboard</a>
+  </div>
+  <div class="navbar-end" id="navUser">
+    <a href="login.html" class="btn btn-outline btn-sm" id="navLoginBtn">Sign In</a>
+    <a href="register.html" class="btn btn-primary btn-sm" id="navRegisterBtn">Get Started</a>
+    <span id="navGreeting" style="display:none;color:var(--green-100);font-size:14px"></span>
+    <button class="btn btn-ghost btn-sm" id="navLogoutBtn" style="display:none;color:var(--green-100)" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Faisalabad Trade Portal</h1>
+  <p>فیصل آباد ٹریڈ پورٹل — Pakistan's comprehensive trade, export & manufacturing data platform</p>
+  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+    <a href="register.html" class="btn btn-primary btn-lg">Get Started Free</a>
+    <a href="packages.html" class="btn btn-outline btn-lg">View Packages</a>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="section">
+  <div class="container">
+    <div class="grid-4" id="statsGrid">
+      <div class="stat-card" style="background:var(--slate-50);border:1px solid var(--slate-200)"><div class="value" id="statExports">—</div><div class="label">Total Exports (PKR)</div></div>
+      <div class="stat-card" style="background:var(--slate-50);border:1px solid var(--slate-200)"><div class="value" id="statFactories">—</div><div class="label">Registered Factories</div></div>
+      <div class="stat-card" style="background:var(--slate-50);border:1px solid var(--slate-200)"><div class="value" id="statUsers">—</div><div class="label">Active Users</div></div>
+      <div class="stat-card" style="background:var(--slate-50);border:1px solid var(--slate-200)"><div class="value" id="statSubs">—</div><div class="label">Active Subscriptions</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- Currency & Market -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-header">💰 Currency Exchange Rates</div>
+        <div class="table-wrap">
+          <table id="currencyTable">
+            <thead><tr><th>Pair</th><th>Rate</th><th>Change</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">📊 Market Intelligence</div>
+        <div class="table-wrap">
+          <table id="marketTable">
+            <thead><tr><th>Sector</th><th>Growth</th><th>Demand</th><th>Top Market</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Regulatory Alerts -->
+<section class="section" style="padding-top:0">
+  <div class="container">
+    <div class="card">
+      <div class="card-header">🔔 Regulatory Updates</div>
+      <div id="alertsList" style="display:flex;flex-direction:column;gap:12px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="section" style="background:white">
+  <div class="container text-center">
+    <h2 style="font-size:28px;font-weight:800;margin-bottom:32px;color:var(--green-800)">How It Works</h2>
+    <div class="grid-3">
+      <div class="card" style="text-align:center;border:none;box-shadow:none">
+        <div style="font-size:48px;margin-bottom:12px">🔍</div>
+        <h3 style="font-size:18px;font-weight:700">Browse Public Data</h3>
+        <p style="color:var(--slate-500);font-size:14px">Access tax, customs, and export data from government sources — all in one place, no account needed.</p>
+      </div>
+      <div class="card" style="text-align:center;border:none;box-shadow:none">
+        <div style="font-size:48px;margin-bottom:12px">🔐</div>
+        <h3 style="font-size:18px;font-weight:700">Create Your Account</h3>
+        <p style="color:var(--slate-500);font-size:14px">Secure 2FA-protected login. Choose a package that fits your business size and needs.</p>
+      </div>
+      <div class="card" style="text-align:center;border:none;box-shadow:none">
+        <div style="font-size:48px;margin-bottom:12px">📈</div>
+        <h3 style="font-size:18px;font-weight:700">Grow Your Exports</h3>
+        <p style="color:var(--slate-500);font-size:14px">Personalized KPIs, real-time alerts, regulatory updates, and analytics tailored to your business.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Packages Preview -->
+<section class="section">
+  <div class="container text-center">
+    <h2 style="font-size:28px;font-weight:800;margin-bottom:8px;color:var(--green-800)">Choose Your Package</h2>
+    <p style="color:var(--slate-400);margin-bottom:32px">From free basic access to enterprise-grade solutions</p>
+    <div class="grid-4" id="packagesPreview"></div>
+    <a href="packages.html" class="btn btn-primary btn-lg mt-24">See All Packages & Pricing</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <p><strong>Faisalabad Trade Portal</strong> — فیصل آباد ٹریڈ پورٹل</p>
+  <p style="margin-top:8px">Empowering Faisalabad's Export, Manufacturing & Factory Community</p>
+</footer>
+
+<script src="js/api.js"></script>
+<script>
+// Check auth state on load
+const token = api.getToken();
+if (token) {
+  document.getElementById('navLogin').style.display = 'none';
+  document.getElementById('navRegister').style.display = 'none';
+  document.getElementById('navDashboard').style.display = 'inline';
+  document.getElementById('navLoginBtn').style.display = 'none';
+  document.getElementById('navRegisterBtn').style.display = 'none';
+  const user = api.getUser();
+  if (user) document.getElementById('navGreeting').style.display = 'inline';
+  document.getElementById('navGreeting').textContent = user ? `👋 ${user.company_name}` : '';
+  document.getElementById('navLogoutBtn').style.display = 'inline';
+}
+
+async function loadDashboard() {
+  try {
+    const data = await api.getPublicDashboard();
+    document.getElementById('statExports').textContent = `PKR ${data.stats.total_exports_pkr}`;
+    document.getElementById('statFactories').textContent = data.stats.total_factories;
+    document.getElementById('statUsers').textContent = data.stats.active_users.toLocaleString();
+    document.getElementById('statSubs').textContent = data.stats.active_subscriptions.toLocaleString();
+
+    const currTbody = document.querySelector('#currencyTable tbody');
+    data.currency_updates.forEach(c => {
+      const cls = c.change.startsWith('+') ? 'badge badge-success' : 'badge badge-danger';
+      currTbody.innerHTML += `<tr><td>${c.pair}</td><td><strong>${c.rate}</strong></td><td><span class="${cls}">${c.change}</span></td></tr>`;
+    });
+
+    const mktTbody = document.querySelector('#marketTable tbody');
+    data.market_intelligence.forEach(m => {
+      const demandCls = m.demand === 'High' ? 'badge badge-success' : 'badge badge-warning';
+      mktTbody.innerHTML += `<tr><td><strong>${m.sector}</strong></td><td>${m.growth}</td><td><span class="${demandCls}">${m.demand}</span></td><td>${m.top_market}</td></tr>`;
+    });
+
+    const alertsDiv = document.getElementById('alertsList');
+    data.regulatory_alerts.forEach(a => {
+      const cls = a.urgency === 'high' ? 'alert alert-error' : a.urgency === 'medium' ? 'alert' : 'alert alert-info';
+      alertsDiv.innerHTML += `<div class="${cls}" style="display:flex;justify-content:space-between;align-items:center;margin:0"><span><strong>${a.title}</strong></span><span>${getUrgencyBadge(a.urgency)} ${a.date}</span></div>`;
+    });
+  } catch (e) {
+    console.error('Failed to load dashboard:', e);
+  }
+}
+
+async function loadPackagesPreview() {
+  try {
+    const pkgs = await api.getPackages();
+    const container = document.getElementById('packagesPreview');
+    container.innerHTML = pkgs.filter(p => !p.is_addon).slice(0, 4).map(p => `
+      <div class="package-card ${p.is_popular ? 'popular' : ''}" style="text-align:left">
+        ${p.is_popular ? '<div class="popular-badge">Most Popular</div>' : ''}
+        <h3>${p.name}</h3>
+        <div class="price">${p.price_pkr === 0 ? 'Free' : `PKR ${p.price_pkr.toLocaleString()}`}<span>${p.price_pkr > 0 ? '/mo' : ''}</span></div>
+        <p style="color:var(--slate-500);font-size:14px">${p.description}</p>
+        <a href="register.html" class="btn btn-primary btn-block btn-sm mt-16">${p.price_pkr === 0 ? 'Get Started' : 'Subscribe'}</a>
+      </div>
+    `).join('');
+  } catch (e) {
+    document.getElementById('packagesPreview').innerHTML = '<p>Failed to load packages</p>';
+  }
+}
+
+loadDashboard();
+loadPackagesPreview();
+</script>
+</body>
+</html>
